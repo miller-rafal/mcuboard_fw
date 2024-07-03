@@ -22,19 +22,29 @@ ISR(INT2_vect)
 void interrupts_register_int0(InterruptSenseControlE sense_control, void (*callback)(void))
 {
     GICR |= (1 << INT0);
-    //MCUCR |= sense_control;
-    MCUCR = MCUCR & 0b11111100 | sense_control;
+    MCUCR = (MCUCR & 0b11111100) | sense_control;
 
     int0_callback = callback;
+}
+
+void interrupts_unregister_int0(void)
+{
+    GICR &= ~(1 << INT0);
+    MCUCR = (MCUCR & 0b11111100);
 }
 
 void interrupts_register_int1(InterruptSenseControlE sense_control, void (*callback)(void))
 {
     GICR |= (1 << INT1);
-    //MCUCR |= (sense_control << 2);
-    MCUCR = MCUCR & 0b11110011 | (sense_control << 2);
+    MCUCR = (MCUCR & 0b11110011) | (sense_control << 2);
 
     int1_callback = callback;
+}
+
+void interrupts_unregister_int1(void)
+{
+    GICR &= ~(1 << INT1);
+    MCUCR = (MCUCR & 0b11110011);
 }
 
 int interrupts_register_int2(InterruptSenseControlE sense_control, void (*callback)(void))
@@ -59,4 +69,10 @@ int interrupts_register_int2(InterruptSenseControlE sense_control, void (*callba
     int2_callback = callback;
 
     return 0;
+}
+
+void interrupts_unregister_int2(void)
+{
+    GICR &= ~(1 << INT2);
+    MCUCSR &= ~(1 << ISC2);
 }
