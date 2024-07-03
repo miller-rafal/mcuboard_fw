@@ -15,5 +15,6 @@ typedef enum InterruptSenseControlE
 
 void interrupts_register_int0(InterruptSenseControlE sense_control, void (*callback)(void));
 void interrupts_register_int1(InterruptSenseControlE sense_control, void (*callback)(void));
+int interrupts_register_int2(InterruptSenseControlE sense_control, void (*callback)(void));
 
 #endif
